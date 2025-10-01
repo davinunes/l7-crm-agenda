@@ -33,7 +33,8 @@ document.getElementById('syncButton').addEventListener('click', () => {
 });
 
 async function sendToN8n(data) {
-    const webhookUrl = 'https://evolution1.acessodf.net/webhook-test/layer7-agenda';
+    
+    const webhookUrl = 'https://evolution1.acessodf.net/webhook/layer7-agenda';
     const statusEl = document.getElementById('status');
 
     try {
