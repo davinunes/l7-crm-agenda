@@ -1,11 +1,10 @@
-// popup.js - VERSÃO COM MELHOR EXIBIÇÃO DE ERROS
+// popup.js - VERSÃO FINAL CORRIGIDA
 
 document.getElementById('syncButton').addEventListener('click', () => {
     const statusEl = document.getElementById('status');
     statusEl.textContent = 'Capturando dados...';
 
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-        // Garante que o content.js já foi injetado antes de enviar a mensagem
         chrome.scripting.executeScript({
             target: { tabId: tabs[0].id },
             files: ['content.js']
@@ -16,16 +15,16 @@ document.getElementById('syncButton').addEventListener('click', () => {
                     return;
                 }
 
-                // --- LÓGICA DE EXIBIÇÃO DE ERRO MELHORADA ---
                 if (response && response.error) {
-                    // Exibe o erro específico enviado pelo content.js
                     statusEl.textContent = `Erro: ${response.error}`;
-                } else if (response && response.ticketId) {
-                    // Sucesso, envia para o n8n
+                
+                // --- CORREÇÃO APLICADA AQUI ---
+                // Verificando pelo campo 'ticketUUID' em vez do antigo 'ticketId'
+                } else if (response && response.ticketUUID) {
+                // ---------------------------------
                     statusEl.textContent = 'Dados capturados! Enviando...';
                     sendToN8n(response);
                 } else {
-                    // Erro genérico se a resposta for vazia
                     statusEl.textContent = 'Nenhum dado de ticket encontrado.';
                 }
             });
@@ -34,7 +33,7 @@ document.getElementById('syncButton').addEventListener('click', () => {
 });
 
 async function sendToN8n(data) {
-    const webhookUrl = 'https://evolution1.acessodf.net/webhook-test/layer7-agenda'; // ⚠️ TROQUE PELA SUA URL REAL
+    const webhookUrl = 'https://evolution1.acessodf.net/webhook-test/layer7-agenda';
     const statusEl = document.getElementById('status');
 
     try {
@@ -45,7 +44,7 @@ async function sendToN8n(data) {
         });
 
         if (response.ok) {
-            statusEl.textContent = '✅ Sucesso! Agendamento enviado.';
+            statusEl.textContent = '✅ Sucesso! Enviado para o n8n.';
         } else {
             const errorData = await response.json();
             statusEl.textContent = `Falha no envio: ${errorData.message || response.statusText}`;

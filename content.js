@@ -61,21 +61,28 @@ async function fetchDataFromApi() {
 
     // 4. Formata os dados
     const formattedData = {
-        ticketId: currentTicket.number,
+        // IDs para o Banco de Dados (formato UUID)
+        ticketUUID: currentTicket.id,
+        
+        // Dados para exibição (Agenda, etc.)
+        ticketNumber: currentTicket.number, // O formato 'TK...'
         ticketTitle: currentTicket.title,
         ticketDescription: currentTicket.description,
         clientName: currentTicket.client?.name || 'Cliente não encontrado',
         clientGroup: currentTicket.client?.group?.name || 'Grupo não definido',
         ticketScheduleStart: currentTicket.scheduled_start,
         ticketScheduleEnd: currentTicket.scheduled_end,
+        
+        // Tarefas, cada uma com seu próprio UUID
         tasks: (currentTicket.tasks || []).map(task => ({
-            taskId: task.id, 
+            taskUUID: task.id, // ID da tarefa para o Banco de Dados
             title: task.title, 
             status: task.status,
             description: task.description,
             scheduleStart: task.scheduled_start, 
             scheduleEnd: task.scheduled_end,
         })),
+        
         messagesCount: (currentTicket.messages || []).length,
         filesCount: (currentTicket.files || []).length
     };
