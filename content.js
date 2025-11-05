@@ -61,11 +61,8 @@ async function fetchDataFromApi() {
 
     // 4. Formata os dados
     const formattedData = {
-        // IDs para o Banco de Dados (formato UUID)
         ticketUUID: currentTicket.id,
-        
-        // Dados para exibição (Agenda, etc.)
-        ticketNumber: currentTicket.number, // O formato 'TK...'
+        ticketNumber: currentTicket.number,
         ticketTitle: currentTicket.title,
         ticketDescription: currentTicket.description,
         clientName: currentTicket.client?.name || 'Cliente não encontrado',
@@ -73,18 +70,17 @@ async function fetchDataFromApi() {
         ticketScheduleStart: currentTicket.scheduled_start,
         ticketScheduleEnd: currentTicket.scheduled_end,
         
-        // Tarefas, cada uma com seu próprio UUID
+        // Incluindo os arrays completos para o n8n processar
         tasks: (currentTicket.tasks || []).map(task => ({
-            taskUUID: task.id, // ID da tarefa para o Banco de Dados
+            taskUUID: task.id, 
             title: task.title, 
             status: task.status,
             description: task.description,
             scheduleStart: task.scheduled_start, 
             scheduleEnd: task.scheduled_end,
         })),
-        
-        messagesCount: (currentTicket.messages || []).length,
-        filesCount: (currentTicket.files || []).length
+        messages: currentTicket.messages || [], // ENVIANDO O ARRAY DE MENSAGENS
+        files: currentTicket.files || []       // ENVIANDO O ARRAY DE ARQUIVOS
     };
     console.log("[Extensão] Passo 4: Dados formatados para envio.");
     return formattedData;
