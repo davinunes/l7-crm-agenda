@@ -34,7 +34,7 @@ document.getElementById('syncButton').addEventListener('click', () => {
 
 async function sendToN8n(data) {
     
-    const webhookUrl = 'https://evolution1.acessodf.net/webhook/layer7-agenda';
+    const webhookUrl = 'https://chronos.digitalinovation.com.br/webhook/layer7-agenda';
     const statusEl = document.getElementById('status');
 
     try {
@@ -45,7 +45,7 @@ async function sendToN8n(data) {
         });
 
         if (response.ok) {
-            statusEl.textContent = '✅ Sucesso! Enviado para o n8n.';
+            statusEl.textContent = 'Sucesso! Enviado para o n8n.';
         } else {
             const errorData = await response.json();
             statusEl.textContent = `Falha no envio: ${errorData.message || response.statusText}`;

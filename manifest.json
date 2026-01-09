@@ -10,7 +10,8 @@
   ],
   "host_permissions": [
     "https://evolution1.acessodf.net/",
-    "https://jubjvkcudbudpxcvmdsc.supabase.co/"
+    "https://jubjvkcudbudpxcvmdsc.supabase.co/",
+    "https://chronos.digitalinovation.com.br/"
   ],
   "background": {
     "service_worker": "background.js"
